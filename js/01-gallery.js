@@ -1,18 +1,53 @@
 import { galleryItems } from "./gallery-items.js";
-// Change code below this line
-console.log(galleryItems);
 
 const refs = {
-  gallery: document.querySelector("gallery"),
+  gallery: document.querySelector(".gallery"),
 };
 
-const showGallery = () => {
-  return galleryItems
+const renderGallery = () =>
+  galleryItems
     .map(
-      (el) => `<img src="${el.preview}" alt="${el.description}" data-src="#" />`
+      ({ preview, original, description }) => `  
+      <div class="gallery__item">
+        <a class="gallery__link" href="large-image.jpg">
+          <img
+          class="gallery__image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+          />
+        </a>
+      </div>`
     )
     .join("");
-};
-console.log(showGallery());
 
-refs.gallery.innerHTML = showGallery();
+refs.gallery.insertAdjacentHTML("afterbegin", renderGallery());
+
+const onClickOpenModal = (e) => {
+  if (e.target.nodeName !== "IMG") {
+    return;
+  }
+
+  e.preventDefault();
+  createAndShowModalImg(e.target.dataset.source);
+};
+
+refs.gallery.addEventListener("click", onClickOpenModal);
+
+const createAndShowModalImg = (src) => {
+  const lightBox = basicLightbox.create(
+    `
+    <img src="${src}" width="800" height="600">
+`
+  );
+  lightBox.show();
+};
+
+// document.addEventListener("keydown", (event) => {
+//   if (event.key === "Escape") {
+//     console.log("qwrP");
+//   }
+// });
+
+// lightBox.show(() => console.log("lightbox now visible"));
+// instance.close(() => console.log("lightbox not visible anymore"));
