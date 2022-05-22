@@ -35,19 +35,22 @@ const onClickOpenModal = (e) => {
 refs.gallery.addEventListener("click", onClickOpenModal);
 
 const createAndShowModalImg = (src) => {
-  const lightBox = basicLightbox.create(
-    `
+  const str = `
     <img src="${src}" width="800" height="600">
-`
-  );
+`;
+  const lightBox = basicLightbox.create(str, {
+    onShow: () => {
+      addEventListener(
+        "keydown",
+        (closeEvent) => {
+          if (closeEvent.code === "Escape") {
+            console.log(closeEvent.code);
+            lightBox.close();
+          }
+        },
+        { once: true }
+      );
+    },
+  });
   lightBox.show();
 };
-
-// document.addEventListener("keydown", (event) => {
-//   if (event.key === "Escape") {
-//     console.log("qwrP");
-//   }
-// });
-
-// lightBox.show(() => console.log("lightbox now visible"));
-// instance.close(() => console.log("lightbox not visible anymore"));
