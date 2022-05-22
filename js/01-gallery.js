@@ -40,17 +40,17 @@ const createAndShowModalImg = (src) => {
 `;
   const lightBox = basicLightbox.create(str, {
     onShow: () => {
-      addEventListener(
-        "keydown",
-        (closeEvent) => {
-          if (closeEvent.code === "Escape") {
-            console.log(closeEvent.code);
-            lightBox.close();
-          }
-        },
-        { once: true }
-      );
+      addEventListener("keydown", onEscKeyPress);
+
+      function onEscKeyPress(closeEvent) {
+        if (closeEvent.code === "Escape") {
+          console.log(closeEvent.code);
+          removeEventListener("keydown", onEscKeyPress);
+          lightBox.close();
+        }
+      }
     },
   });
+
   lightBox.show();
 };
